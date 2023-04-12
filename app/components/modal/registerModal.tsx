@@ -17,9 +17,12 @@ import useRegisterModal from "@/app/hooks/useRegisterModal";
 import Modal from "./modal";
 import Heading from "../heading";
 import Input from "../inputs/input";
+import Button from "../button";
+import useLoginModal from "@/app/hooks/useLoginModal";
 
 const RegisterModal = () => {
-   const registerModal = useRegisterModal();
+   	const registerModal = useRegisterModal();
+	const loginModal = useLoginModal();
 	const [isLoading, setIsLoading] = useState(false);
 
 	const { 
@@ -37,20 +40,25 @@ const RegisterModal = () => {
 	 });
 	
 	const onSubmit: SubmitHandler<FieldValues> = (data) => {
-	setIsLoading(true);
-	axios.post('/api/register', data)
-	.then(() => {
-		// toast.success('Registered!');
-		registerModal.onClose();
-		})
+		setIsLoading(true);
+
+		axios.post('/api/register', data)
+		.then(() => {
+			// toast.success('Registered!');
+			registerModal.onClose();
+			})
 		.catch((error) => {
-		// toast.error(error);
-		console.log(error)
+			toast.error('Semething went wrong!');
 		})
 		.finally(() => {
-		setIsLoading(false);
+			setIsLoading(false);
 		})
 	}
+
+	const onToggle = useCallback(() => {
+		registerModal.onClose();
+		loginModal.onOpen();
+	  },[registerModal, loginModal])
 
 	const bodyModal = (
 		<div className="flex flex-col gap-4">
@@ -86,6 +94,43 @@ const RegisterModal = () => {
 		</div>
 	)
 
+	const footerContent = (
+		<div className="flex flex-col gap-4 mt-3">
+			<hr />
+			<Button 
+				outline 
+				label="Continue with Google"
+				icon={FcGoogle}
+				onClick={() => signIn('google')} 
+			/>
+			<Button 
+				outline 
+				label="Continue with Github"
+				icon={AiFillGithub}
+				onClick={() => signIn('github')}
+			/>
+			<div 
+			className="
+				text-neutral-500 
+				text-center 
+				mt-4 
+				font-light
+			"
+			>
+			<p>Already have an account?
+				<span 
+				onClick={onToggle} 
+				className="
+					text-neutral-800
+					cursor-pointer 
+					hover:underline
+				"
+				> Log in</span>
+			</p>
+			</div>
+		</div>
+	)
+
   return (
    <Modal 
 		disabled={isLoading}
@@ -95,6 +140,7 @@ const RegisterModal = () => {
 		onClose={registerModal.onClose}
 		onSubmit={handleSubmit(onSubmit)}
 		body={bodyModal}
+		footer={footerContent}
 	/>
   )
 }
