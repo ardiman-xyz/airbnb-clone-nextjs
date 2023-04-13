@@ -3,9 +3,11 @@ import { Nunito } from 'next/font/google'
 import './globals.css'
 
 import Navbar from './components/navbar/navbar'
+
 import RegisterModal from './components/modal/registerModal'
 import ToasterProvider from './providers/toasterProvider'
 import LoginModal from './components/modal/loginModal'
+import RentModal from './components/modal/rentModal'
 
 import getCurrentUser from './actions/getCurrentUser'
 
@@ -26,6 +28,7 @@ export default async function RootLayout({ children }: {children: React.ReactNod
     <html lang="en">
       <body className={font.className}>
         <ToasterProvider />
+        <RentModal />
         <LoginModal />
         <RegisterModal />
         <Navbar currentUser={currentUser} />
