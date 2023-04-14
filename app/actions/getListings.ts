@@ -39,7 +39,7 @@ export default async function getListings()
         
           return listings;
 
-    } catch (error:any) {
+    } catch (error: any) {
         throw new Error(error);
     }
 }
