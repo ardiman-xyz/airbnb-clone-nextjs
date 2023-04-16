@@ -17,7 +17,6 @@ const ListingsPage = async ( {params}: {params: IParams} ) => {
     return (
         <ListingClient 
             listing={listing}
-            currentUser={currentUser}
         />
     )
 }
